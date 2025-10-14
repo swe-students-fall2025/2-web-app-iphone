@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pet Details</title>
+<style>
+  :root{ --bg:#f6f6f6; --card:#ffffff; --muted:#d9d9d9; --text:#222; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--text);
+             font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif }
+  .container{ max-width:680px; margin:0 auto; padding:16px }
+  .card{ background:var(--card); border-radius:14px; box-shadow:0 1px 6px rgba(0,0,0,.06); padding:14px }
+  .header{ background:var(--muted); display:flex; justify-content:space-between; align-items:center;
+           border-radius:10px; padding:10px 12px; font-weight:700; font-size:1.25rem }
+  .fav{ border:0; background:#efefef; border-radius:8px; padding:6px 12px; cursor:pointer }
+
+  .image{ margin:16px 0; background:var(--muted); border-radius:10px; min-height:220px;
+          display:grid; place-items:center; color:#333 }
+  .image img{ width:100%; height:auto; border-radius:10px }
+
+  .pill{ display:inline-block; background:#eee; border-radius:999px; padding:4px 10px; margin:0 6px 6px 0; font-size:.9rem }
+  h3{ margin:18px 0 8px 0 }
+  .about{ background:var(--muted); border-radius:10px; padding:12px }
+  .row{ display:flex; gap:10px; margin-top:14px }
+  .btn{ flex:1; border:0; background:var(--muted); border-radius:10px; padding:12px; font-size:1rem; cursor:pointer }
+  @media (min-width:768px){ .image{ min-height:300px } }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" role="region" aria-labelledby="title">
+      <div class="header">
+        <div id="title">Pet Details</div>
+        <button class="fav" aria-pressed="false" aria-label="Add to favorites">Fav</button>
+      </div>
+
+      <figure class="image" aria-label="Pet image">
+        {% if animal.photo_url %}
+          <img src="{{ animal.photo_url }}" alt="Photo of {{ animal.name }}" />
+        {% else %}
+          <div>Pet Image</div>
+        {% endif %}
+      </figure>
+
+      <p class="pet-info">
+        <strong>{{ animal.name or "Unnamed" }}</strong>
+        {% if animal.age %} — {{ animal.age }}{% endif %}
+        {% if animal.sex %} — {{ animal.sex }}{% endif %}
+        {% if animal.breed %} — {{ animal.breed }}{% endif %}
+      </p>
+
+      <p>
+        {% set traits = animal.traits or [] %}
+        {% if traits %}
+          {% for t in traits %}<span class="pill">{{ t }}</span>{% endfor %}
+        {% else %}
+          <span class="pill">Calm</span>
+          <span class="pill">House Trained</span>
+          <span class="pill">Vaccinated</span>
+        {% endif %}
+      </p>
+
+      <h3>About</h3>
+      <div class="about">
+        {{ animal.bio or "This friendly pet is looking for a loving home." }}<br><br>
+        <strong>Requirements:</strong> {{ animal.requirements or "Daily walks and playtime" }}<br>
+        <strong>Shelter:</strong> {{ animal.shelter or "Local Shelter" }}
+        {% if animal.address %} — {{ animal.address }}{% endif %}
+      </div>
+
+      <div class="row">
+        <button class="btn" onclick="location.href='/'">Home</button>
+        <!-- Matches your Flask delete route -->
+        {% if animal._id %}
+        <form method="POST" action="/delete/{{ animal._id }}" style="flex:1">
+          <button class="btn" type="submit">Delete</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
