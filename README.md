@@ -12,7 +12,7 @@ See instructions. Delete this line and place a link to the user stories here.
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+Run `docker compose up --force-recreate --build` to start the `mongodb` database and the Flask app with one command.
 
 ## Task boards
 
