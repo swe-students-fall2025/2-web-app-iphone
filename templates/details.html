@@ -49,6 +49,16 @@
         {% if animal.breed %} — {{ animal.breed }}{% endif %}
       </p>
 
+      {% set distance = animal.distance %}
+      {% if distance is not none and distance != '' %}
+        {% if distance is number %}
+          {% set distance_text = ('{:.1f}'.format(distance)).rstrip('0').rstrip('.') %}
+        {% else %}
+          {% set distance_text = distance %}
+        {% endif %}
+        <p><strong>Distance:</strong> {{ distance_text }} mi</p>
+      {% endif %}
+
       <p>
         {% set traits = animal.traits or [] %}
         {% if traits %}
