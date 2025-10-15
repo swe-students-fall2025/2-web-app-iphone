@@ -27,14 +27,46 @@ def home():
 
 @app.route("/add", methods=["POST"])
 def add_animal():
-    if name := request.form.get("name"):
-        animals.insert_one({"name": name})
+    """Add a new animal document to the database."""
+
+    name = (request.form.get("name") or "").strip()
+    if not name:
+        return redirect("/")
+
+    new_animal: dict[str, object] = {"name": name}
+
+    def _optional_text(field: str) -> str | None:
+        value = request.form.get(field, "").strip()
+        return value or None
+
+    for key in ["age", "breed", "shelter", "sex", "bio", "requirements", "address"]:
+        if value := _optional_text(key):
+            new_animal[key] = value
+
+    if photo_url := _optional_text("photo_url"):
+        new_animal["photo_url"] = photo_url
+
+    if distance := _optional_text("distance"):
+        try:
+            new_animal["distance"] = float(distance)
+        except ValueError:
+            new_animal["distance"] = distance
+
+    if traits_raw := _optional_text("traits"):
+        traits = [trait for trait in (t.strip() for t in traits_raw.split(",")) if trait]
+        if traits:
+            new_animal["traits"] = traits
+
+    animals.insert_one(new_animal)
     return redirect("/")
 
 
 @app.route("/delete/<animal_id>", methods=["POST"])
 def delete_animal(animal_id):
-    animals.delete_one({"_id": ObjectId(animal_id)})
+    try:
+        animals.delete_one({"_id": ObjectId(animal_id)})
+    except (InvalidId, TypeError):
+        abort(404)
     return redirect("/")
 
 @app.route("/details/<animal_id>")
