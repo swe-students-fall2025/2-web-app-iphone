@@ -80,6 +80,10 @@
 
       <div class="row">
         <button class="btn" onclick="location.href='/'">Home</button>
+        <!-- Edit button -->
+        {% if animal._id %}
+        <button class="btn" onclick="location.href='/edit/{{ animal._id }}'">Edit</button>
+        {% endif %}
         <!-- Matches your Flask delete route -->
         {% if animal._id %}
         <form method="POST" action="/delete/{{ animal._id }}" style="flex:1">

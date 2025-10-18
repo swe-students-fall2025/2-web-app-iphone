@@ -82,5 +82,59 @@ def details(animal_id):
     return render_template("details.html", animal=doc)
 
 
+@app.route("/edit/<animal_id>")
+def edit_animal(animal_id):
+    """Display the edit form for an animal."""
+    try:
+        doc = animals.find_one({"_id": ObjectId(animal_id)})
+    except (InvalidId, TypeError):
+        abort(404)
+
+    if not doc:
+        abort(404)
+
+    return render_template("edit.html", animal=doc)
+
+
+@app.route("/update/<animal_id>", methods=["POST"])
+def update_animal(animal_id):
+    """Update an existing animal document in the database."""
+    try:
+        object_id = ObjectId(animal_id)
+    except (InvalidId, TypeError):
+        abort(404)
+
+    name = (request.form.get("name") or "").strip()
+    if not name:
+        return redirect(f"/edit/{animal_id}")
+
+    updated_animal: dict[str, object] = {"name": name}
+
+    def _optional_text(field: str) -> str | None:
+        value = request.form.get(field, "").strip()
+        return value or None
+
+    for key in ["age", "breed", "shelter", "sex", "bio", "requirements", "address"]:
+        if value := _optional_text(key):
+            updated_animal[key] = value
+
+    if photo_url := _optional_text("photo_url"):
+        updated_animal["photo_url"] = photo_url
+
+    if distance := _optional_text("distance"):
+        try:
+            updated_animal["distance"] = float(distance)
+        except ValueError:
+            updated_animal["distance"] = distance
+
+    if traits_raw := _optional_text("traits"):
+        traits = [trait for trait in (t.strip() for t in traits_raw.split(",")) if trait]
+        if traits:
+            updated_animal["traits"] = traits
+
+    animals.update_one({"_id": object_id}, {"$set": updated_animal})
+    return redirect(f"/details/{animal_id}")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
