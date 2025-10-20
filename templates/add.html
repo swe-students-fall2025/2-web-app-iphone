@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Pet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+</head>
+<body>
+
+    <div class="search-container">
+        <header>
+            <button class="back-btn" onclick="window.location.href='/todo';">Back</button>
+        </header>
+
+        <section class="recommendation-message">
+            <h1>Add a New Pet for Adoption</h1>
+            <p>Fill in the details below to add a new pet to the adoption list. Clear, accurate information helps adopters find the right match.</p>
+        </section>
+
+        <div class="exercise-list">
+            <form id="pet-form" class="exercise-item" method="POST">
+                <div class="exercise-item">
+                    <label for="name">Pet Name</label>
+                    <input id="name" name="name" type="text" placeholder="e.g., Bella" required />
+                </div>
+
+                <div class="exercise-item">
+                    <label for="species">Species</label>
+                    <select id="species" name="species" required>
+                        <option value="">Select species</option>
+                        <option>Dog</option>
+                        <option>Cat</option>
+                        <option>Rabbit</option>
+                        <option>Bird</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="exercise-item">
+                    <label for="breed">Breed</label>
+                    <input id="breed" name="breed" type="text" placeholder="e.g., Golden Retriever" />
+                </div>
+
+                <div class="exercise-item">
+                    <label for="age">Age</label>
+                    <input id="age" name="age" type="number" min="0" step="1" placeholder="e.g., 3" />
+                </div>
+
+                <div class="exercise-item">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender">
+                        <option value="">Select gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Unknown</option>
+                    </select>
+                </div>
+
+                <div class="exercise-item">
+                    <label for="size">Size</label>
+                    <select id="size" name="size">
+                        <option value="">Select size</option>
+                        <option>Small</option>
+                        <option>Medium</option>
+                        <option>Large</option>
+                    </select>
+                </div>
+
+                <div class="exercise-item">
+                    <label for="color">Color</label>
+                    <input id="color" name="color" type="text" placeholder="e.g., Brown & White" />
+                </div>
+
+                <div class="exercise-item">
+                    <label for="photo_url">Photo URL</label>
+                    <input id="photo_url" name="photo_url" type="url" placeholder="https://..." />
+                </div>
+
+                <div class="exercise-item">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Temperament, health, preferences..."></textarea>
+                </div>
+
+                <div class="exercise-item" style="margin-top: 12px;">
+                    <button type="submit" class="add-btn">Add Pet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('pet-form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+
+            fetch('/add_pet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(res => {
+                if (res.ok) {
+                    alert('Pet added successfully!');
+                    form.reset();
+                    // Redirect if you have a pet list page
+                    // window.location.href = '/pets';
+                } else {
+                    alert('Failed to add pet.');
+                }
+            }).catch(() => alert('An error occurred while adding the pet.'));
+        });
+    </script>
+
+</body>
+</html>
