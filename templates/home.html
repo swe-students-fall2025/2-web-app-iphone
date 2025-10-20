@@ -46,7 +46,18 @@
     <div class="section" aria-labelledby="homeTitle">
       <div id="homeTitle" class="header">Home</div>
 
-      <div class="search" role="search">Search for pets....</div>
+      <div class="search" role="search">
+        <form method="GET" action="/" style="display:flex; gap:8px; justify-content:center; align-items:center">
+          <input type="text" name="q" value="{{ q or '' }}" placeholder="Search by name, breed, shelter..." aria-label="Search" style="flex:1; max-width:420px; padding:10px 12px; border-radius:8px; border:1px solid #ccc; font:inherit" />
+          <button class="chip" type="submit" aria-label="Run search">Search</button>
+          {% if q %}
+          <a class="chip" href="/" aria-label="Clear search">Clear</a>
+          {% endif %}
+        </form>
+        {% if q %}
+          <div style="margin-top:6px; font-size:.95rem">Results for <strong>{{ q }}</strong></div>
+        {% endif %}
+      </div>
 
       <div class="chips" role="tablist" aria-label="Categories">
         <button class="chip active" role="tab" aria-selected="true">Dogs</button>
@@ -55,7 +66,7 @@
         <button class="chip" role="tab" aria-selected="false">NearMe</button>
       </div>
 
-      {% for animal in animals %}
+  {% for animal in animals %}
       <article class="card">
         <div class="photo" aria-hidden="true">
           {% if animal.photo_url %}
@@ -96,7 +107,11 @@
         </div>
       </article>
       {% else %}
-      <p>No animals yet. Add one below!</p>
+      {% if q %}
+        <p>No results found for "{{ q }}".</p>
+      {% else %}
+        <p>No animals yet. Add one below!</p>
+      {% endif %}
       {% endfor %}
 
       <!-- Add animal (your server expects only "name") -->
