@@ -1,0 +1,262 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif
+}
+
+body{
+  background-color:#f4f7fb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:0
+}
+
+.exercise-title,
+.search-exercise-title,
+.instruction-title{
+  text-align:center;
+  font-size:22px;
+  margin-bottom:6px
+}
+
+.exercise-container,
+.search-container,
+.exercise-instruct-container,
+.progress-container,
+.delete-container{
+  width:100vw;
+  max-width:500px;
+  min-width:300px;
+  min-height:100vh;
+  background-color:#fff;
+  border:1px solid #e1e5ee;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px
+}
+
+.header-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  margin-top:40px;
+  margin-bottom:30px
+}
+
+.back-btn{
+  background-color:#1f4db8;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px;
+  position:absolute;
+  top:3vh;
+  left:5vw
+}
+
+.search-message p{
+  font-size:14px;
+  margin-bottom:10px;
+  line-height:1.5;
+  color:#5b6472
+}
+
+.exercise-image{
+  width:100%;
+  height:180px;
+  background-color:#dde5f0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+  border-radius:8px
+}
+
+input{
+  display:inline-block;
+  width:100%;
+  padding:8px 10px;
+  margin:6px 0;
+  font-size:14px;
+  border:1px solid #d7dce6;
+  border-radius:6px;
+  background:#fff
+}
+
+.exercise-description,
+.progress-report{
+  margin-bottom:6px;
+  margin-top:16px
+}
+
+.exercise-description p,
+.exercise-instruct p,
+.exercise-list p{
+  font-size:14px;
+  line-height:1.4;
+  color:#323842
+}
+
+.progress-report p{
+  font-size:14px;
+  margin-top:5px
+}
+
+.more-info a{
+  margin-top:10px;
+  font-size:12px;
+  color:#1f4db8;
+  text-decoration:none
+}
+
+.exercise-data{margin-bottom:6px}
+
+.exercise-data label,
+.exercise-item label,
+.progress-tiem label{
+  flex-grow:1;
+  font-size:14px;
+  margin-left:12px
+}
+
+.exercise-list{margin-top:20px}
+
+.exercise-item,
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 10px;
+  border:1px solid #e1e5ee;
+  border-radius:8px;
+  margin:8px 0;
+  background:#fff
+}
+
+.search-btn,
+.exercise-save-btn{
+  background-color:#1f4db8;
+  color:#fff;
+  border:none;
+  padding:10px 0;
+  font-size:16px;
+  width:100%;
+  cursor:pointer;
+  border-radius:6px;
+  margin-top:10px
+}
+
+.add-btn,
+.add-todo-btn{
+  background-color:#37a24b;
+  color:#fff;
+  border:none;
+  text-align:center;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px
+}
+
+.delete-btn{
+  background-color:#e74a3b;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px
+}
+
+.progress-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px;
+  border:1px solid #e1e5ee;
+  border-radius:8px;
+  margin-bottom:6px;
+  font-size:14px
+}
+
+.progress-item-data{
+  display:flex;
+  flex-direction:column;
+  margin-right:30px
+}
+
+footer{
+  text-align:center;
+  font-size:12px;
+  color:gray;
+  margin-top:20px;
+  padding:10px 0;
+  background-color:#fff;
+  width:100%
+}
+
+footer a{
+  color:gray;
+  text-decoration:none
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e1e5ee;
+  border-radius:10px;
+  padding:12px
+}
+
+.photo{
+  background:#f0f4fa;
+  border-radius:8px;
+  width:100%;
+  height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.meta{font-size:14px;color:#4b5563}
+.meta .name{font-weight:700;color:#1f2937}
+.meta .line{margin-top:6px;color:#6b7280}
+
+.pill{
+  display:inline-block;
+  background:#edf2ff;
+  color:#334155;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  margin:3px 6px 0 0
+}
+
+.thumb{
+  width:56px;
+  height:56px;
+  border-radius:8px;
+  background:#f0f4fa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
