@@ -43,8 +43,26 @@ def _coerce_float(value: str) -> float | str:
 
 @app.route("/")
 def home():
-    all_animals = list(pets_collection.find())
-    return render_template("home.html", animals=all_animals)
+    q = (request.args.get("q") or "").strip()
+
+    query: dict = {}
+    if q:
+        regex = {"$regex": q, "$options": "i"}
+        query = {
+            "$or": [
+                {"name": regex},
+                {"breed": regex},
+                {"shelter": regex},
+                {"sex": regex},
+                {"bio": regex},
+                {"requirements": regex},
+                {"address": regex},
+                {"traits": regex},
+            ]
+        }
+
+    all_animals = list(pets_collection.find(query))
+    return render_template("home.html", animals=all_animals, q=q)
 
 
 @app.route("/add", methods=["GET", "POST"])
