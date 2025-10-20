@@ -1,3 +1,259 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif
+}
+
+body{
+  background-color:#f4f7fb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:0
+}
+
+.todo-container,
+.search-container,
+.delete-container{
+  width:100vw;
+  max-width:500px;
+  min-width:300px;
+  height:auto;
+  min-height:100vh;
+  background-color:#fff;
+  border:1px solid #e1e5ee;
+  padding:20px;
+  box-shadow:0 0 10px rgba(0,0,0,.08);
+  border-radius:10px
+}
+
+header{
+  text-align:center;
+  margin-bottom:20px
+}
+
+header h1{
+  font-size:22px;
+  margin-bottom:10px;
+  margin-top:30px
+}
+
+header p{
+  font-size:14px;
+  color:#6b7280
+}
+
+.add-btn{
+  background-color:#37a24b;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px
+}
+
+.welcome-message,
+.recommendation-message{
+  margin-bottom:20px
+}
+
+.welcome-message p,
+.recommendation-message p{
+  font-size:14px;
+  margin-bottom:10px;
+  line-height:1.5
+}
+
+.todo-list,
+.exercise-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px
+}
+
+.todo-item,
+.exercise-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  border:1px solid #e1e5ee;
+  border-radius:8px;
+  background:#fff
+}
+
+.todo-item input[type="checkbox"],
+.exercise-item input[type="checkbox"]{
+  margin-right:10px
+}
+
+.todo-item label,
+.exercise-item label{
+  flex-grow:1;
+  font-size:16px
+}
+
+.delete-all-btn{
+  background-color:#1f4db8;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px;
+  margin-top:20px;
+  display:block;
+  width:100%;
+  text-align:center
+}
+
+.logout-btn{
+  background-color:#a12b33;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px;
+  margin-top:20px;
+  display:block;
+  width:100%;
+  text-align:center
+}
+
+.search-box{
+  width:100%;
+  padding:10px;
+  font-size:16px;
+  border:1px solid #d7dce6;
+  border-radius:6px;
+  margin-bottom:20px;
+  background:#fff
+}
+
+footer{
+  text-align:center;
+  font-size:12px;
+  color:gray;
+  margin-top:40px
+}
+
+footer a{
+  color:gray;
+  text-decoration:none
+}
+
+.add-todo-btn{
+  background-color:#37a24b;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px;
+  position:absolute;
+  top:3vh;
+  right:5vw
+}
+
+.task-checkbox{
+  margin-right:10px
+}
+
+.task-checkbox:disabled{
+  background-color:#ddd;
+  cursor:not-allowed
+}
+
+.back-btn{
+  background-color:#1f4db8;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px;
+  position:absolute;
+  top:3vh;
+  left:5vw;
+  margin-bottom:20px
+}
+
+.delete-btn{
+  background-color:#e74a3b;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:12px;
+  border-radius:6px
+}
+
+.search-btn{
+  background-color:#1f4db8;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  cursor:pointer;
+  font-size:14px;
+  border-radius:6px;
+  margin-top:20px;
+  display:block;
+  width:100%;
+  text-align:center
+}
+
+.exercise-btn{
+  background:none;
+  border:none;
+  color:#1f4db8;
+  font-size:16px;
+  cursor:pointer;
+  padding:0;
+  text-decoration:underline
+}
+
+.warning-message,
+.recommendation-message{
+  margin-top:60px;
+  margin-bottom:20px
+}
+
+.exercise-btn:visited{
+  text-decoration:underline;
+  color:#1f4db8
+}
+
+/* 轻量新增以适配宠物卡片与缩略图 */
+.thumb{
+  width:56px;
+  height:56px;
+  border-radius:8px;
+  background:#f0f4fa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.pill{
+  display:inline-block;
+  background:#edf2ff;
+  color:#334155;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  margin:3px 6px 0 0
+}
 
 .delete-container { max-width: 720px; margin: 0 auto; padding: 16px; }
 .delete-container header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
