@@ -1,0 +1,19 @@
+
+.delete-container { max-width: 720px; margin: 0 auto; padding: 16px; }
+.delete-container header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.delete-container .back-btn { border:0; padding:10px 14px; border-radius:10px; background:#ececec; cursor:pointer; }
+
+.delete-container .warning-message { background:#fff3cd; color:#664d03; border:1px solid #ffecb5; border-radius:12px; padding:12px 14px; margin-bottom:16px; }
+
+.delete-container .list { display:flex; flex-direction:column; gap:10px; }
+.delete-container .item { display:flex; align-items:center; justify-content:space-between; gap:10px; background:#fff; border-radius:12px; padding:12px 14px; box-shadow:0 1px 6px rgba(0,0,0,.06); }
+
+.delete-container .pet-info { display:flex; align-items:center; gap:10px; }
+.delete-container .thumb { width:56px; height:56px; border-radius:8px; background:#eee; display:grid; place-items:center; overflow:hidden; }
+.delete-container .thumb img { width:100%; height:100%; object-fit:cover; }
+
+.delete-container .name { font-weight:700; }
+.delete-container .meta { color:#666; font-size:.92rem; }
+
+.delete-container .delete-btn { border:0; background:#ef4444; color:#fff; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600; }
+.delete-container .empty { text-align:center; color:#666; margin-top:12px; }

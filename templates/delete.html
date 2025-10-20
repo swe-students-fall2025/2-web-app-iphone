@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Pets • Pet Adoption</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+</head>
+<body>
+  <div class="delete-container">
+    <header>
+      <button class="back-btn" onclick="window.location.href='/'">Back</button>
+      <h1 style="margin:0;font-size:1.2rem;">Delete Existing Pets</h1>
+    </header>
+
+    <section class="warning-message" role="note" aria-live="polite">
+      <p>Deleting a pet will remove it from the adoption list. This action cannot be undone (you can re-add the pet later from the Add page).</p>
+    </section>
+
+    <div class="list" id="pet-list">
+      {% for animal in animals %}
+      <div class="item" id="pet-{{ animal._id }}">
+        <div class="pet-info">
+          <div class="thumb" aria-hidden="true">
+            {% if animal.photo_url %}
+              <img src="{{ animal.photo_url }}" alt="Photo of {{ animal.name }}">
+            {% else %}
+              <span>🐾</span>
+            {% endif %}
+          </div>
+          <div>
+            <div class="name">{{ animal.name or "Unnamed" }}</div>
+            <div class="meta">
+              {% if animal.breed %}{{ animal.breed }} • {% endif %}
+              {% if animal.age %}{{ animal.age }} • {% endif %}
+              {% if animal.shelter %}{{ animal.shelter }}{% else %}Local Shelter{% endif %}
+            </div>
+          </div>
+        </div>
+
+        <button class="delete-btn" data-id="{{ animal._id }}" aria-label="Delete {{ animal.name or 'this pet' }}">
+          Delete
+        </button>
+      </div>
+      {% else %}
+      <p class="empty">No pets to delete.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('aria-label')?.replace(/^Delete\s+/,'') || 'this pet';
+        if (!confirm(`Delete ${name}?`)) return;
+
+        try {
+          const res = await fetch(`/delete/${id}`, { method: 'POST' });
+          if (res.ok) {
+            const row = document.getElementById(`pet-${id}`);
+            if (row) row.remove();
+            const list = document.getElementById('pet-list');
+            if (list && list.children.length === 0) {
+              const p = document.createElement('p');
+              p.className = 'empty';
+              p.textContent = 'No pets to delete.';
+              list.appendChild(p);
+            }
+          } else {
+            alert('Failed to delete the pet.');
+          }
+        } catch {
+          alert('Network error while deleting the pet.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
