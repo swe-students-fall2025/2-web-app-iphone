@@ -3,7 +3,8 @@ import os
 from bson import ObjectId
 from bson.errors import InvalidId
 from dotenv import dotenv_values, load_dotenv
-from flask import Flask, abort, jsonify, redirect, render_template, request
+from flask import Flask, abort, jsonify, redirect, render_template, request, session, url_for
+from werkzeug.security import check_password_hash, generate_password_hash
 from pymongo import MongoClient
 
 load_dotenv()
@@ -12,11 +13,13 @@ app = Flask(__name__)
 
 config = dotenv_values()
 app.config.from_mapping(config)
+app.config.setdefault("SECRET_KEY", os.environ.get("SECRET_KEY", "dev-secret-key-change-me"))
 
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client[os.getenv("MONGO_DB")]
 animals = db["animals"]
 pets_collection = animals
+users_collection = db["users"]
 print("Connected to MongoDB", client, db, animals)
 
 
@@ -49,9 +52,13 @@ def add_animal():
     """Add a new animal document to the database."""
 
     if request.method == "GET":
+        if "user_id" not in session:
+            return redirect(url_for("login"))
         return render_template("add.html")
 
     name = _optional_text_value(request.form.get("name"))
+    if "user_id" not in session:
+        return redirect(url_for("login"))
     if not name:
         return redirect("/")
 
@@ -82,6 +89,9 @@ def add_animal():
 @app.route("/add_pet", methods=["POST"])
 def add_pet():
     """Add a new pet via JSON payload (used by add.html fetch form)."""
+
+    if "user_id" not in session:
+        return jsonify({"success": False, "message": "Login required."}), 401
 
     payload = request.get_json(silent=True) or {}
     if not isinstance(payload, dict):
@@ -127,17 +137,25 @@ def add_pet():
 def delete_page():
     """Render the delete page with the current list of pets."""
 
+    if "user_id" not in session:
+        return redirect(url_for("login"))
     all_animals = list(pets_collection.find())
     return render_template("delete.html", animals=all_animals)
 
 
 @app.route("/delete/<animal_id>", methods=["POST"])
 def delete_animal(animal_id):
+    if "user_id" not in session:
+        return jsonify({"success": False, "message": "Login required."}), 401
     try:
         pets_collection.delete_one({"_id": ObjectId(animal_id)})
     except (InvalidId, TypeError):
         abort(404)
-    return redirect("/")
+    # If the client expects HTML (e.g., standard form submit), redirect home.
+    if request.accept_mimetypes.accept_html and not request.accept_mimetypes.accept_json:
+        return redirect("/")
+    # Otherwise, return JSON for fetch/XHR callers.
+    return jsonify({"success": True})
 
 @app.route("/details/<animal_id>")
 def details(animal_id):
@@ -150,6 +168,71 @@ def details(animal_id):
         abort(404)
 
     return render_template("details.html", animal=doc)
+
+
+@app.route("/search")
+def search_redirect():
+    # Simple placeholder: reuse home for now
+    return redirect(url_for("home"))
+
+
+# --- Authentication routes ---
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+
+    username = _optional_text_value(request.form.get("username"))
+    password = _optional_text_value(request.form.get("password"))
+
+    if not username or not password:
+        return jsonify({"success": False, "message": "Username and password are required."}), 400
+
+    user = users_collection.find_one({"username": username})
+    if not user or not check_password_hash(user.get("password_hash", ""), password):
+        return jsonify({"success": False, "message": "Invalid username or password."}), 401
+
+    session["user_id"] = str(user.get("_id"))
+    session["username"] = user.get("username")
+    return jsonify({"success": True})
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "GET":
+        return render_template("signup.html")
+
+    username = _optional_text_value(request.form.get("username"))
+    password = _optional_text_value(request.form.get("password"))
+
+    if not username or not password:
+        return jsonify({"success": False, "message": "Username and password are required."}), 400
+
+    if len(username) < 3:
+        return jsonify({"success": False, "message": "Username must be at least 3 characters."}), 400
+    if len(password) < 8:
+        return jsonify({"success": False, "message": "Password must be at least 8 characters."}), 400
+
+    existing = users_collection.find_one({"username": username})
+    if existing:
+        return jsonify({"success": False, "message": "Username already exists."}), 409
+
+    password_hash = generate_password_hash(password)
+    result = users_collection.insert_one({
+        "username": username,
+        "password_hash": password_hash,
+    })
+
+    return jsonify({"success": True, "message": "Account created.", "id": str(result.inserted_id)})
+
+
+@app.route("/logout", methods=["POST", "GET"])
+def logout():
+    session.clear()
+    if request.method == "GET":
+        return redirect(url_for("home"))
+    return jsonify({"success": True})
 
 
 if __name__ == "__main__":
