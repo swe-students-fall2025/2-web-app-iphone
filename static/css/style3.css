@@ -1,0 +1,96 @@
+.login-container,.signup-container{
+  width:100vw;
+  max-width:400px;
+  min-width:300px;
+  background-color:#fff;
+  padding:20px;
+  border-radius:10px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:auto;
+  min-height:100vh;
+  border:1px solid #e1e5ee;
+  box-shadow:0 0 10px rgba(0,0,0,.08)
+}
+
+.input-group{
+  margin-bottom:15px;
+  width:100%
+}
+
+.input-group label{
+  font-size:14px;
+  display:block;
+  margin-bottom:5px
+}
+
+.input-group input{
+  width:100%;
+  padding:10px;
+  font-size:14px;
+  border:1px solid #d7dce6;
+  border-radius:6px;
+  background:#fff
+}
+
+.input-group input:focus{
+  outline:none;
+  border-color:#1f4db8;
+  box-shadow:0 0 0 3px rgba(31,77,184,.15)
+}
+
+.login-btn,.signup-btn{
+  background-color:#1f4db8;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  cursor:pointer;
+  font-size:16px;
+  border-radius:6px;
+  width:100%;
+  text-align:center
+}
+
+.login-btn:hover,.signup-btn:hover{
+  background-color:#18409c
+}
+
+.login-footer,.signup-footer{
+  margin-top:20px;
+  text-align:center
+}
+
+.login-footer a,.signup-footer a{
+  color:#1f4db8;
+  text-decoration:none;
+  font-size:14px
+}
+
+.login-footer a:hover,.signup-footer a:hover{
+  text-decoration:underline
+}
+
+.login-header,.signup-header{
+  text-align:center;
+  margin-bottom:20px
+}
+
+.login-header h1,.signup-header h1{
+  font-size:24px;
+  color:#333;
+  margin-bottom:10px
+}
+
+@media (max-width:768px){
+  .login-container,.signup-container{max-width:90%}
+}
+
+.error-message{
+  color:#e74a3b;
+  font-size:14px;
+  margin-top:10px;
+  text-align:center
+}
