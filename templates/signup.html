@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Adoption • Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style3.css') }}">
+</head>
+<body>
+  <div class="signup-container">
+    <header class="signup-header">
+      <h1>🐾 Create Your Pet Adoption Account</h1>
+      <p style="font-size:14px;color:#6b7280;margin-top:6px;">Save favorites, contact shelters, and manage your listings.</p>
+    </header>
+
+    <form id="signup-form" method="POST" action="/register" novalidate>
+      <div class="input-group">
+        <label for="username">Email or Username</label>
+        <input type="text" id="username" name="username" placeholder="e.g., adopter@paws.com" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="At least 8 characters" required>
+      </div>
+
+      <div class="signup-btn-group" style="width:100%;margin-top:4px;">
+        <button type="submit" class="signup-btn">Sign Up</button>
+      </div>
+
+      <div class="signup-footer">
+        <p>Already have an account? <a href="/login">Log in</a></p>
+        <p style="margin-top:8px;"><a href="/search">Browse pets first</a></p>
+      </div>
+
+      <div id="signup-error" class="error-message" style="display:none;"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('signup-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+
+      fetch('/register', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert(data.message || 'Account created successfully.');
+            window.location.href = '/login';
+          } else {
+            const el = document.getElementById('signup-error');
+            el.textContent = data.message || 'Signup failed. Please try again.';
+            el.style.display = 'block';
+          }
+        })
+        .catch(() => {
+          const el = document.getElementById('signup-error');
+          el.textContent = 'An error occurred during signup.';
+          el.style.display = 'block';
+        });
+    });
+  </script>
+</body>
+</html>
