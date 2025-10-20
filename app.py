@@ -16,6 +16,7 @@ app.config.from_mapping(config)
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client[os.getenv("MONGO_DB")]
 animals = db["animals"]
+pets_collection = animals
 print("Connected to MongoDB", client, db, animals)
 
 
